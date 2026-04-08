@@ -2,14 +2,9 @@
 {% load static %}
 {% block title %} Book List {% endblock title %}
 {% block content %}
-<h1>Search Results</h1>
-{% if books %}
-<ul>
-{% for book in books %}
-<li><strong>{{ book.title }}</strong> by {{ book.author }} (ID: {{ book.id }})</li>
+<h1>Book List</h1>
+{% for obj in books %}
+ID: {{obj.id}}, Title: {{obj.title}}
+<hr>
 {% endfor %}
-</ul>
-{% else %}
-<p>No books found matching the criteria.</p>
-{% endif %}
 {% endblock content %}

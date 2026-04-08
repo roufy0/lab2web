@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from .models import Book
 
 def __getBooksList():
     book1 = {'id':12344321, 'title':'Continuous Delivery', 'author':'J.Humble and D. Farley'}
@@ -44,3 +45,34 @@ def search_books(request):
         return render(request, 'bookmodule/bookList.html', {'books':newBooks})
     else:
         return render(request, 'bookmodule/search.html')
+
+def insert_books(request):
+    mybook1 = Book(
+            title='Clean Code',
+            author='Robert C. Martin',
+            price=110.00,
+            edition=1
+        )
+    mybook1.save()
+
+    mybook2 = Book.objects.create(
+            title='Design Patterns',
+            author='Erich Gamma',
+            price=95.00,
+            edition=2
+        )
+    mybook2.save()
+
+    mybooks = Book.objects.all()
+    return render(request, 'bookmodule/bookList.html', {'books': mybooks})
+
+def simple_query(request):
+    mybooks=Book.objects.filter(title__icontains='The') 
+    return render(request, 'bookmodule/bookList.html', {'books':mybooks})
+
+def complex_query(request):
+    mybooks = Book.objects.filter(author__isnull=False).filter(title__icontains='the').filter(edition__gte=3).exclude(price__lte=70)[:1]
+    if len(mybooks) >= 1:
+        return render(request, 'bookmodule/bookList.html', {'books': mybooks})
+    else:
+        return render(request, 'bookmodule/index.html')

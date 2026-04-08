@@ -12,4 +12,7 @@ path('html5/text/formatting', views.formatting_page, name="books.html5.formattin
 path('html5/listing', views.listing_page, name="books.html5.listing"),
 path('html5/tables', views.tables_page, name="books.html5.tables"),
 path('search/', views.search_books, name="books.search"),
+path('insert/', views.insert_books, name="books.insert"),
+path('simple/query', views.simple_query, name="books.simple_query"),
+path('complex/query', views.complex_query, name="books.complex_query"),
 ]
