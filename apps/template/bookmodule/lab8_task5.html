@@ -1,0 +1,35 @@
+{% extends "layouts/base.html" %}
+{% block title %}Lab8 Task5 – Book Aggregation Stats{% endblock title %}
+{% block content %}
+<h1>Task 5: Book Aggregation Statistics</h1>
+<table border="1" cellpadding="8" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Statistic</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Number of Books</td>
+            <td>{{ stats.count }}</td>
+        </tr>
+        <tr>
+            <td>Total Price of All Books</td>
+            <td>${{ stats.total_price }}</td>
+        </tr>
+        <tr>
+            <td>Average Price</td>
+            <td>${{ stats.avg_price|floatformat:2 }}</td>
+        </tr>
+        <tr>
+            <td>Maximum Price</td>
+            <td>${{ stats.max_price }}</td>
+        </tr>
+        <tr>
+            <td>Minimum Price</td>
+            <td>${{ stats.min_price }}</td>
+        </tr>
+    </tbody>
+</table>
+{% endblock content %}
