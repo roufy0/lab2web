@@ -1,0 +1,35 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Lab 10 Task 2 - Students{% endblock %}
+
+{% block content %}
+<h1>Students (Task 2 - ManyToMany addresses)</h1>
+<p>
+    <a href="{% url 'books.lab11.task2.add_student' %}">Add Student</a> |
+    <a href="{% url 'books.lab11.task2.list_addresses' %}">Manage Addresses</a>
+</p>
+
+<table>
+    <tr><th>ID</th><th>Name</th><th>Age</th><th>Addresses</th><th>Actions</th></tr>
+    {% for student in students %}
+    <tr>
+        <td>{{ student.id }}</td>
+        <td>{{ student.name }}</td>
+        <td>{{ student.age }}</td>
+        <td>
+            {% for addr in student.addresses.all %}{{ addr.city }}{% if not forloop.last %}, {% endif %}{% empty %}-{% endfor %}
+        </td>
+        <td>
+            <a href="{% url 'books.lab11.task2.edit_student' student.id %}">Edit</a>
+            <form method="post" action="{% url 'books.lab11.task2.delete_student' student.id %}" style="display:inline"
+                  onsubmit="return confirm('Delete {{ student.name }}?');">
+                {% csrf_token %}
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="5">No students yet.</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

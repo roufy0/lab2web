@@ -1,0 +1,15 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Lab 10 Task 1 - Edit Address{% endblock %}
+
+{% block content %}
+<h1>Edit Address #{{ address.id }}</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <p>
+        <button type="submit">Save</button>
+        <a href="{% url 'books.lab11.task1.list_addresses' %}">Cancel</a>
+    </p>
+</form>
+{% endblock %}

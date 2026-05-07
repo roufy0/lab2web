@@ -1,0 +1,36 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Lab 10 Task 3 - Products{% endblock %}
+
+{% block content %}
+<h1>Products (Task 3 - Image Upload)</h1>
+<p><a href="{% url 'books.lab11.task3.add_product' %}">Add Product</a></p>
+
+<table>
+    <tr><th>ID</th><th>Name</th><th>Description</th><th>Image</th><th>Actions</th></tr>
+    {% for product in products %}
+    <tr>
+        <td>{{ product.id }}</td>
+        <td>{{ product.name }}</td>
+        <td>{{ product.description }}</td>
+        <td>
+            {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" style="height:60px;">
+            {% else %}
+            -
+            {% endif %}
+        </td>
+        <td>
+            <a href="{% url 'books.lab11.task3.edit_product' product.id %}">Edit</a>
+            <form method="post" action="{% url 'books.lab11.task3.delete_product' product.id %}" style="display:inline"
+                  onsubmit="return confirm('Delete {{ product.name }}?');">
+                {% csrf_token %}
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="5">No products yet.</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

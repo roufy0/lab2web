@@ -43,17 +43,26 @@ class Book(models.Model):
         return self.title
 
 
-class Address(models.Model):
+class Address2(models.Model):
     city = models.CharField(max_length=100)
 
     def __str__(self):
         return self.city
 
 
-class Student(models.Model):
+class Student2(models.Model):
     name = models.CharField(max_length=100)
     age = models.IntegerField()
-    address = models.ForeignKey(Address, on_delete=models.CASCADE)
+    addresses = models.ManyToManyField(Address2, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Product(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    image = models.ImageField(upload_to='products/', blank=True, null=True)
 
     def __str__(self):
         return self.name

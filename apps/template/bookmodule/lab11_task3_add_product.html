@@ -1,0 +1,15 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Lab 10 Task 3 - Add Product{% endblock %}
+
+{% block content %}
+<h1>Add Product</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <p>
+        <button type="submit">Save</button>
+        <a href="{% url 'books.lab11.task3.list_products' %}">Cancel</a>
+    </p>
+</form>
+{% endblock %}

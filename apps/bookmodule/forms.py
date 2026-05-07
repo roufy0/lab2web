@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from .models import Book
+from .models import Book, Address, Student, Address2, Student2, Product
 
 
 class BookForm(forms.ModelForm):
@@ -45,3 +45,85 @@ class BookForm(forms.ModelForm):
         if rating is None or rating < 1 or rating > 5:
             raise ValidationError("Rating must be between 1 and 5.")
         return rating
+
+
+class AddressForm(forms.ModelForm):
+    class Meta:
+        model = Address
+        fields = ['city']
+
+    def clean_city(self):
+        city = self.cleaned_data.get('city', '').strip()
+        if not city:
+            raise ValidationError("City is required.")
+        return city
+
+
+class StudentForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = ['name', 'age', 'address']
+        widgets = {
+            'address': forms.Select(),
+        }
+
+    def clean_name(self):
+        name = self.cleaned_data.get('name', '').strip()
+        if not name:
+            raise ValidationError("Name is required.")
+        return name
+
+    def clean_age(self):
+        age = self.cleaned_data.get('age')
+        if age is None or age < 0:
+            raise ValidationError("Age must be 0 or greater.")
+        return age
+
+
+class Address2Form(forms.ModelForm):
+    class Meta:
+        model = Address2
+        fields = ['city']
+
+    def clean_city(self):
+        city = self.cleaned_data.get('city', '').strip()
+        if not city:
+            raise ValidationError("City is required.")
+        return city
+
+
+class Student2Form(forms.ModelForm):
+    class Meta:
+        model = Student2
+        fields = ['name', 'age', 'addresses']
+        widgets = {
+            'addresses': forms.CheckboxSelectMultiple(),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['addresses'].required = False
+
+    def clean_name(self):
+        name = self.cleaned_data.get('name', '').strip()
+        if not name:
+            raise ValidationError("Name is required.")
+        return name
+
+    def clean_age(self):
+        age = self.cleaned_data.get('age')
+        if age is None or age < 0:
+            raise ValidationError("Age must be 0 or greater.")
+        return age
+
+
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ['name', 'description', 'image']
+
+    def clean_name(self):
+        name = self.cleaned_data.get('name', '').strip()
+        if not name:
+            raise ValidationError("Name is required.")
+        return name
