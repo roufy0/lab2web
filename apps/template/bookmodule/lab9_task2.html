@@ -1,0 +1,23 @@
+{% extends "layouts/base.html" %}
+{% block title %}Lab9 Task2 – Publisher Total Stock{% endblock title %}
+{% block content %}
+<h1>Task 2: Publishers with Total Book Stock</h1>
+<table border="1" cellpadding="6" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Publisher</th><th>Location</th><th>Total Stock</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pub in publishers %}
+        <tr>
+            <td>{{ pub.name }}</td>
+            <td>{{ pub.location }}</td>
+            <td>{{ pub.total_stock|default:"0" }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3">No publishers found.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}
