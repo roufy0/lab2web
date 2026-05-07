@@ -14,3 +14,45 @@
 .topnav a.active{
  color: #008CBA;
 }
+
+.lab9 {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 0 16px;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+.lab9 h1 { font-size: 22px; margin-bottom: 8px; }
+.lab9 a { color: #2563eb; text-decoration: none; }
+.lab9 a:hover { text-decoration: underline; }
+
+.lab9 table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 10px;
+}
+.lab9 th, .lab9 td {
+    border: 1px solid #ddd;
+    padding: 6px 10px;
+    text-align: left;
+    font-size: 14px;
+}
+.lab9 th { background: #f3f4f6; }
+
+.lab9 form p { margin: 8px 0; }
+.lab9 label { display: inline-block; min-width: 110px; }
+.lab9 input, .lab9 select {
+    padding: 4px 6px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+.lab9 button {
+    padding: 5px 12px;
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.lab9 button:hover { background: #1d4ed8; }
+.lab9 .err { color: #b91c1c; }
