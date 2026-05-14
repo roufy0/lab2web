@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q, Count, Sum, Avg, Max, Min, F, FloatField, ExpressionWrapper
+from django.contrib.auth.decorators import login_required
 from .models import Book, Address, Student, Publisher, Author, Address2, Student2, Product
 from .forms import BookForm, AddressForm, StudentForm, Address2Form, Student2Form, ProductForm
 
@@ -110,14 +111,13 @@ def lab8_task7(request):
     return render(request, 'bookmodule/lab8_task7.html', {'city_counts': city_counts})
 
 def lab9_task1(request):
-    total = Book.objects.aggregate(total=Sum('quantity'))['total'] or 1
+    total_quantity = Book.objects.aggregate(Sum('quantity')) ['quantity__sum'] or 1
+
     books = Book.objects.annotate(
-        availability=ExpressionWrapper(
-            F('quantity') * 100.0 / total,
-            output_field=FloatField()
-        )
-    )
+        availability=F('quantity') * 100 / total_quantity)
+
     return render(request, 'bookmodule/lab9_task1.html', {'books': books})
+
 
 def lab9_task2(request):
     publishers = Publisher.objects.annotate(total_stock=Sum('book__quantity'))
@@ -277,11 +277,13 @@ def lab9_part2_deletebook(request, id):
     return redirect('books.lab9_part2.listbooks')
 
 
+@login_required
 def lab11_task1_list_addresses(request):
     addresses = Address.objects.all().order_by('id')
     return render(request, 'bookmodule/lab11_task1_list_addresses.html', {'addresses': addresses})
 
 
+@login_required
 def lab11_task1_add_address(request):
     if request.method == 'POST':
         form = AddressForm(request.POST)
@@ -293,6 +295,7 @@ def lab11_task1_add_address(request):
     return render(request, 'bookmodule/lab11_task1_add_address.html', {'form': form})
 
 
+@login_required
 def lab11_task1_edit_address(request, id):
     address = get_object_or_404(Address, id=id)
     if request.method == 'POST':
@@ -305,17 +308,20 @@ def lab11_task1_edit_address(request, id):
     return render(request, 'bookmodule/lab11_task1_edit_address.html', {'form': form, 'address': address})
 
 
+@login_required
 def lab11_task1_delete_address(request, id):
     address = get_object_or_404(Address, id=id)
     address.delete()
     return redirect('books.lab11.task1.list_addresses')
 
 
+@login_required
 def lab11_task1_list_students(request):
     students = Student.objects.select_related('address').order_by('id')
     return render(request, 'bookmodule/lab11_task1_list_students.html', {'students': students})
 
 
+@login_required
 def lab11_task1_add_student(request):
     if request.method == 'POST':
         form = StudentForm(request.POST)
@@ -327,6 +333,7 @@ def lab11_task1_add_student(request):
     return render(request, 'bookmodule/lab11_task1_add_student.html', {'form': form})
 
 
+@login_required
 def lab11_task1_edit_student(request, id):
     student = get_object_or_404(Student, id=id)
     if request.method == 'POST':
@@ -339,6 +346,7 @@ def lab11_task1_edit_student(request, id):
     return render(request, 'bookmodule/lab11_task1_edit_student.html', {'form': form, 'student': student})
 
 
+@login_required
 def lab11_task1_delete_student(request, id):
     student = get_object_or_404(Student, id=id)
     student.delete()
@@ -346,11 +354,13 @@ def lab11_task1_delete_student(request, id):
 
 
 
+@login_required
 def lab11_task2_list_addresses(request):
     addresses = Address2.objects.all().order_by('id')
     return render(request, 'bookmodule/lab11_task2_list_addresses.html', {'addresses': addresses})
 
 
+@login_required
 def lab11_task2_add_address(request):
     if request.method == 'POST':
         form = Address2Form(request.POST)
@@ -362,6 +372,7 @@ def lab11_task2_add_address(request):
     return render(request, 'bookmodule/lab11_task2_add_address.html', {'form': form})
 
 
+@login_required
 def lab11_task2_edit_address(request, id):
     address = get_object_or_404(Address2, id=id)
     if request.method == 'POST':
@@ -374,17 +385,20 @@ def lab11_task2_edit_address(request, id):
     return render(request, 'bookmodule/lab11_task2_edit_address.html', {'form': form, 'address': address})
 
 
+@login_required
 def lab11_task2_delete_address(request, id):
     address = get_object_or_404(Address2, id=id)
     address.delete()
     return redirect('books.lab11.task2.list_addresses')
 
 
+@login_required
 def lab11_task2_list_students(request):
     students = Student2.objects.prefetch_related('addresses').order_by('id')
     return render(request, 'bookmodule/lab11_task2_list_students.html', {'students': students})
 
 
+@login_required
 def lab11_task2_add_student(request):
     if request.method == 'POST':
         form = Student2Form(request.POST)
@@ -396,6 +410,7 @@ def lab11_task2_add_student(request):
     return render(request, 'bookmodule/lab11_task2_add_student.html', {'form': form})
 
 
+@login_required
 def lab11_task2_edit_student(request, id):
     student = get_object_or_404(Student2, id=id)
     if request.method == 'POST':
@@ -408,16 +423,19 @@ def lab11_task2_edit_student(request, id):
     return render(request, 'bookmodule/lab11_task2_edit_student.html', {'form': form, 'student': student})
 
 
+@login_required
 def lab11_task2_delete_student(request, id):
     student = get_object_or_404(Student2, id=id)
     student.delete()
     return redirect('books.lab11.task2.list_students')
 
+@login_required
 def lab11_task3_list_products(request):
     products = Product.objects.all().order_by('id')
     return render(request, 'bookmodule/lab11_task3_list_products.html', {'products': products})
 
 
+@login_required
 def lab11_task3_add_product(request):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
@@ -429,6 +447,7 @@ def lab11_task3_add_product(request):
     return render(request, 'bookmodule/lab11_task3_add_product.html', {'form': form})
 
 
+@login_required
 def lab11_task3_edit_product(request, id):
     product = get_object_or_404(Product, id=id)
     if request.method == 'POST':
@@ -441,6 +460,7 @@ def lab11_task3_edit_product(request, id):
     return render(request, 'bookmodule/lab11_task3_edit_product.html', {'form': form, 'product': product})
 
 
+@login_required
 def lab11_task3_delete_product(request, id):
     product = get_object_or_404(Product, id=id)
     product.delete()

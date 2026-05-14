@@ -1,0 +1,20 @@
+{% extends "layouts/base.html" %}
+{% block title %}Login{% endblock title %}
+{% block content %}
+<div style="max-width: 400px; margin: 60px auto; padding: 30px; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+    <h2 style="text-align:center; margin-bottom: 24px;">Login</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit" style="width:100%; padding:10px; background:#007bff; color:#fff; border:none; border-radius:4px; font-size:16px; cursor:pointer;">Login</button>
+    </form>
+    <p style="text-align:center; margin-top:16px;">Don't have an account? <a href="{% url 'users.register' %}">Register</a></p>
+</div>
+{% endblock content %}

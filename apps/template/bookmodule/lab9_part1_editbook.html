@@ -38,12 +38,15 @@
 
     <p>
         <label for="publisher">Publisher:</label>
-        <select id="publisher" name="publisher">
-            <option value="">-- none --</option>
-            {% for p in publishers %}
-            <option value="{{ p.id }}" {% if book.publisher_id == p.id %}selected{% endif %}>{{ p.name }}</option>
-            {% endfor %}
-        </select>
+        <select name="selectedgenre">
+
+  <option selected>Value</option>
+
+  <option value="fiction">Fiction</option>
+
+  <option value="n-fiction">Non-fiction</option>
+
+</select>
     </p>
 
     <p>
